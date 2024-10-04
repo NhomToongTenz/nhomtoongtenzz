@@ -3,18 +3,18 @@ import { parse } from 'url';
 import { createServer as createViteServer } from 'vite';
 
 const port = parseInt(process.env.PORT || '3000', 10);
-const dev = process.env.NODE_ENV !== 'production'; // Xác định chế độ
+const dev = process.env.NODE_ENV !== 'production'; // Determine mode
 
-// Tạo máy chủ Vite
+// Create Vite server
 const app = await createViteServer({
-    server: { middlewareMode: 'ssr' }, // Đặt chế độ middleware
+    server: { middlewareMode: 'ssr' }, // Set middleware mode
 });
 
-// Tạo máy chủ HTTP
+// Create HTTP server
 createServer((req, res) => {
     const parsedUrl = parse(req.url, true);
 
-    // Sử dụng app để xử lý yêu cầu
+    // Use app to handle requests
     app.middlewares(req, res, parsedUrl);
 }).listen(port, () => {
     console.log(`Server is running at http://localhost:${port} in ${dev ? 'development' : 'production'} mode`);
